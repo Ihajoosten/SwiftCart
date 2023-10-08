@@ -1,9 +1,7 @@
 ﻿using Product.Core.Entities;
+using Product.Core.IRepositories.Base;
 
 namespace Product.Core.IRepositories
 {
-    public interface ITypeRepository
-    {
-        Task<IEnumerable<ProductType>> GetAllTypes();
-    }
+    public interface ITypeRepository : IRepository<ProductType> { }
 }
