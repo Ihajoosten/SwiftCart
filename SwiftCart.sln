@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34031.279
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SwiftCart.Api", "SwiftCart.Api\SwiftCart.Api.csproj", "{EB7DEBB3-DC0E-4A3C-9988-AD7C25D382FD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EB7DEBB3-DC0E-4A3C-9988-AD7C25D382FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB7DEBB3-DC0E-4A3C-9988-AD7C25D382FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB7DEBB3-DC0E-4A3C-9988-AD7C25D382FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB7DEBB3-DC0E-4A3C-9988-AD7C25D382FD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F9404141-01E9-48F6-AF4E-61102DE759C5}
+	EndGlobalSection
+EndGlobal
