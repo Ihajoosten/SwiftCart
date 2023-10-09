@@ -1,9 +1,9 @@
-﻿using Product.Application.Dto.Review;
+﻿using AutoMapper;
+using Product.Application.Dto.Review;
 using Product.Application.Interfaces;
 using Product.Application.Services.Base;
 using Product.Core.Entities;
 using Product.Core.IRepositories;
-using AutoMapper;
 
 namespace Product.Application.Services
 {

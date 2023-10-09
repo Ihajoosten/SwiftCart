@@ -1,6 +1,4 @@
-﻿using Product.Core.Specs;
-
-namespace Product.Core.IRepositories.Base
+﻿namespace Product.Core.IRepositories.Base
 {
     public interface IRepository<T> where T : class
     {

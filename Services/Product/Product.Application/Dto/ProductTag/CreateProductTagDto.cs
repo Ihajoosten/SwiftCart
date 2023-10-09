@@ -6,7 +6,7 @@ namespace Product.Application.Dto.ProductTag
     {
         [Required]
         public int ProductId { get; set; }
-        
+
         [Required]
         public int TagId { get; set; }
     }

@@ -11,7 +11,7 @@ namespace Product.Application.Dto.Review
         [Required]
         public int UserId { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-    
+
         [Required]
         public int ProductId { get; set; }
     }

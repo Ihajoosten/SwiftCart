@@ -7,6 +7,10 @@ namespace Product.Infrastructure.Data
 {
     public class ProductContext : DbContext, IProductContext
     {
+        public ProductContext() { }
+
+        public ProductContext(DbContextOptions<ProductContext> options) : base(options) { }
+
         public DbSet<Core.Entities.Product> Products { get; set; }
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Category> Categories { get; set; }
@@ -15,16 +19,12 @@ namespace Product.Infrastructure.Data
         public DbSet<Tag> Tags { get; set; }
         public DbSet<ProductTag> ProductTags { get; set; }
 
-        public ProductContext(DbContextOptions<ProductContext> options) : base(options)
-        {
-        }
-
-        public DbSet<T> Set<T>() where T : class
+        public override DbSet<T> Set<T>() where T : class
         {
             return base.Set<T>();
         }
 
-        public EntityEntry<T> Entry<T>(T entity) where T : class
+        public override EntityEntry<T> Entry<T>(T entity) where T : class
         {
             return base.Entry(entity);
         }

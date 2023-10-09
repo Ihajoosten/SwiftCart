@@ -1,37 +1,32 @@
+using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using Product.Application.Dto.Brand;
+using Product.Application.Dto.Category;
+using Product.Application.Dto.ItemImage;
+using Product.Application.Dto.Product;
+using Product.Application.Dto.ProductTag;
+using Product.Application.Dto.Review;
+using Product.Application.Dto.Tag;
+using Product.Application.Interfaces;
+using Product.Application.Services;
 using Product.Core.Entities;
 using Product.Core.IRepositories;
 using Product.Core.IRepositories.Base;
+using Product.Infrastructure.Data;
+using Product.Infrastructure.Data.Interface;
 using Product.Infrastructure.EFRepositories;
 using Product.Infrastructure.EFRepositories.Base;
-using Product.Application.Interfaces;
-using Product.Application.Interfaces.Base;
-using Product.Application.Services;
-using Product.Application.Services.Base;
-using Product.Application.Dto.Brand;
-using Product.Application.Dto.Product;
-using Product.Application.Dto.Category;
-using Product.Application.Dto.Review;
-using Product.Application.Dto.ProductTag;
-using Product.Application.Dto.Tag;
-using Product.Application.Dto.ItemImage;
-using Product.Infrastructure.Data.Interface;
-using Product.Infrastructure.Data;
-
-using AutoMapper;
-using Microsoft.Extensions.Configuration;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 var config = builder.Configuration;
 
-// Add services to the container.
-services.AddControllers();
-services.AddEndpointsApiExplorer();
-services.AddSwaggerGen();
+
+// Database Dependencies
+services.AddScoped<IProductContext, ProductContext>();
+builder.Services.AddDbContext<IProductContext, ProductContext>(o => o.UseNpgsql(builder.Configuration.GetConnectionString("LocalDevelopment")));
 
 // Service Dependencies
-// services.AddScoped(typeof(IApplicationService<,,>), typeof(ApplicationService<,,,>));
 services.AddScoped<IAppProductService, AppProductService>();
 services.AddScoped<IAppBrandService, AppBrandService>();
 services.AddScoped<IAppCategoryService, AppCategoryService>();
@@ -50,10 +45,6 @@ services.AddScoped<IItemImageRepository, EFItemImageRepository>();
 services.AddScoped<ITagRepository, EFTagRepository>();
 services.AddScoped<IProductTagRepository, EFProductTagRepository>();
 
-// Database Dependencies
-services.AddScoped<IProductContext, ProductContext>();
-services.AddDbContext<ProductContext>(options => options.UseNpgsql(config.GetConnectionString("LocalDevelopment")));
-
 // Configuration Mapper Entity <> Dto
 var mapperConfig = new MapperConfiguration(cfg =>
 {
@@ -68,6 +59,11 @@ var mapperConfig = new MapperConfiguration(cfg =>
 
 var mapper = mapperConfig.CreateMapper();
 services.AddSingleton(mapper);
+
+// Add services to the container.
+services.AddControllers();
+services.AddEndpointsApiExplorer();
+services.AddSwaggerGen();
 
 var app = builder.Build();
 

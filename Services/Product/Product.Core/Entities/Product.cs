@@ -1,5 +1,4 @@
 ﻿using Product.Core.Entities.Base;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Product.Core.Entities
 {
