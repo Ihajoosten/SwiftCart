@@ -16,6 +16,30 @@ namespace Product.Application.Services
             _productRepository = productRepository ?? throw new ArgumentNullException(nameof(productRepository));
         }
 
+        public async Task<IEnumerable<ProductDto>> GetProductsByBrandAsync(int brandId)
+        {
+            var products = await _productRepository.GetProductsByBrandAsync(brandId);
+            return _mapper.Map<IEnumerable<ProductDto>>(products);
+        }
+
+        public async Task<IEnumerable<ProductDto>> GetProductsByCategoryAsync(int categoryId)
+        {
+            var products = await _productRepository.GetProductsByCategoryAsync(categoryId);
+            return _mapper.Map<IEnumerable<ProductDto>>(products);
+        }
+
+        public async Task<IEnumerable<ProductDto>> GetProductsByTagAsync(int tagId)
+        {
+            var products = await _productRepository.GetProductsByTagAsync(tagId);
+            return _mapper.Map<IEnumerable<ProductDto>>(products);
+        }
+
+        public async Task<IEnumerable<ProductDto>> GetProductsByRatingAsync(int minRating)
+        {
+            var products = await _productRepository.GetProductsByRatingAsync(minRating);
+            return _mapper.Map<IEnumerable<ProductDto>>(products);
+        }
+
         public async Task<IEnumerable<ProductDto>> GetTopSellingProductsAsync(int count)
         {
             var products = await _productRepository.GetTopSellingProductsAsync(count);
