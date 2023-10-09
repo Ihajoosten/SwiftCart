@@ -1,11 +1,28 @@
+using Product.Core.IRepositories;
+using Product.Core.IRepositories.Base;
+using Product.Infrastructure.EFRepositories;
+using Product.Infrastructure.EFRepositories.Base;
+
 var builder = WebApplication.CreateBuilder(args);
+var services = builder.Services;
+var configuraiton = builder.Configuration;
 
 // Add services to the container.
+services.AddControllers();
+services.AddEndpointsApiExplorer();
+services.AddSwaggerGen();
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+services.AddScoped(typeof(IRepository<>), typeof(EFRepository<>));
+
+// Register your repositories
+services.AddScoped<IProductRepository, EFProductRepository>();
+services.AddScoped<IBrandRepository, EFBrandRepository>();
+
+//services.AddScoped<ICategoryRepository, EFCategoryRepository>();
+//services.AddScoped<IReviewRepository, EFReviewRepository>();
+//services.AddScoped<IImageRepository, EFImageRepository>();
+//services.AddScoped<ITagRepository, EFTagRepository>();
+//services.AddScoped<IProductTagRepository, EFProductTagRepository>();
 
 var app = builder.Build();
 

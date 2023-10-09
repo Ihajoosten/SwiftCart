@@ -1,17 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Product.Core.IRepositories.Base;
-using Product.Core.Specs;
-using Product.Infrastructure.Data;
+using Product.Infrastructure.Data.Interface;
 
 namespace Product.Infrastructure.EFRepositories.Base
 {
     public class EFRepository<T> : IRepository<T> where T : class
     {
-        protected readonly ProductContext _context;
+        protected readonly IProductContext _context;
 
-        public EFRepository(ProductContext movieContext)
+        public EFRepository(IProductContext productContext)
         {
-            _context = movieContext;
+            _context = productContext ?? throw new ArgumentNullException(nameof(productContext));
         }
 
         public async Task<IReadOnlyList<T?>> GetAllAsync() => await _context.Set<T>().ToListAsync();
