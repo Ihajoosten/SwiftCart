@@ -25,6 +25,8 @@ services.AddSwaggerGen();
 // Register Services
 services.AddScoped(typeof(IApplicationService<,,>), typeof(ApplicationService<,,,>));
 services.AddScoped<IAppProductService, AppProductService>();
+services.AddScoped<IAppBrandService, AppBrandService>();
+services.AddScoped<IAppCategoryService, AppCategoryService>();
 
 // Register Repositories
 services.AddScoped(typeof(IRepository<>), typeof(EFRepository<>));
