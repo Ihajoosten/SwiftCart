@@ -3,7 +3,7 @@ using Product.Core.IRepositories.Base;
 
 namespace Product.Core.IRepositories
 {
-    public interface IImageRepository : IRepository<ItemImage>
+    public interface IItemImageRepository : IRepository<ItemImage>
     {
         Task<IEnumerable<ItemImage?>?> GetImagesByProductIdAsync(int productId);
     }

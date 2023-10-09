@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Product.Application.Dto.Brand;
 using Product.Application.Dto.Category;
 using Product.Application.Interfaces;
 using Product.Application.Services.Base;

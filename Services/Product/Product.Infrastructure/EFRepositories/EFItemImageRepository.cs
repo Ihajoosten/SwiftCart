@@ -5,9 +5,9 @@ using Product.Infrastructure.EFRepositories.Base;
 
 namespace Product.Infrastructure.EFRepositories
 {
-    public class EFImageRepository : EFRepository<ItemImage>, IImageRepository
+    public class EFItemImageRepository : EFRepository<ItemImage>, IItemImageRepository
     {
-        public EFImageRepository(IProductContext context) : base(context)
+        public EFItemImageRepository(IProductContext context) : base(context)
         {
         }
 

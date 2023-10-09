@@ -29,6 +29,7 @@ services.AddScoped<IAppProductService, AppProductService>();
 services.AddScoped<IAppBrandService, AppBrandService>();
 services.AddScoped<IAppCategoryService, AppCategoryService>();
 services.AddScoped<IAppReviewService, AppReviewService>();
+services.AddScoped<IAppItemImageService, AppItemImageService>();
 services.AddScoped<IAppTagService, AppTagService>();
 
 
@@ -38,7 +39,7 @@ services.AddScoped<IProductRepository, EFProductRepository>();
 services.AddScoped<IBrandRepository, EFBrandRepository>();
 services.AddScoped<ICategoryRepository, EFCategoryRepository>();
 services.AddScoped<IReviewRepository, EFReviewRepository>();
-services.AddScoped<IImageRepository, EFImageRepository>();
+services.AddScoped<IItemImageRepository, EFItemImageRepository>();
 services.AddScoped<ITagRepository, EFTagRepository>();
 services.AddScoped<IProductTagRepository, EFProductTagRepository>();
 
