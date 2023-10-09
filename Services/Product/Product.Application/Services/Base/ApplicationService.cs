@@ -43,12 +43,7 @@ namespace Product.Application.Services.Base
         public virtual async Task UpdateAsync(int id, TUpdateDto updateDto)
         {
             var entity = await _repository.GetByIdAsync(id);
-            if (entity == null)
-            {
-                // Handle not found scenario
-                // Throw appropriate exception or return a response indicating not found
-                return;
-            }
+            if (entity == null) return;
 
             _mapper.Map(updateDto, entity);
 
@@ -58,12 +53,7 @@ namespace Product.Application.Services.Base
         public virtual async Task DeleteAsync(int id)
         {
             var entity = await _repository.GetByIdAsync(id);
-            if (entity == null)
-            {
-                // Handle not found scenario
-                // Throw appropriate exception or return a response indicating not found
-                return;
-            }
+            if (entity == null) return;
 
             await _repository.DeleteAsync(entity);
         }

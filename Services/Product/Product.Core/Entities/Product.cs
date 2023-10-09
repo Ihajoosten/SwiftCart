@@ -8,8 +8,9 @@ namespace Product.Core.Entities
         public required string Name { get; set; }
         public required string Description { get; set; }
         public required decimal Price { get; set; }
-        public DateTime CreatedAt { get; set; }
         public int OrderQuantity { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
 
         // Navigation properties
         public int BrandId { get; set; }
