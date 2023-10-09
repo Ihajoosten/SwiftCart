@@ -29,6 +29,7 @@ services.AddScoped<IAppProductService, AppProductService>();
 services.AddScoped<IAppBrandService, AppBrandService>();
 services.AddScoped<IAppCategoryService, AppCategoryService>();
 services.AddScoped<IAppReviewService, AppReviewService>();
+services.AddScoped<IAppTagService, AppTagService>();
 
 
 // Register Repositories

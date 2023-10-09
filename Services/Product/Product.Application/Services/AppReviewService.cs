@@ -4,7 +4,6 @@ using Product.Application.Services.Base;
 using Product.Core.Entities;
 using Product.Core.IRepositories;
 using AutoMapper;
-using Product.Application.Dto.Product;
 
 namespace Product.Application.Services
 {
