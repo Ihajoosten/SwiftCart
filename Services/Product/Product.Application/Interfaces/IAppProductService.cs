@@ -10,7 +10,7 @@ namespace Product.Application.Interfaces
         Task<IEnumerable<ProductDto>> GetProductsByCategoryAsync(int categoryId);
         Task<IEnumerable<ProductDto>> GetProductsByTagAsync(int tagId);
         Task<IEnumerable<ProductDto>> GetProductsByRatingAsync(int minRating);
-        Task<IEnumerable<ProductDto>> GetTopSellingProductsAsync(int count);
-        Task<IEnumerable<ProductDto>> GetNewArrivalProductsAsync(int count);
+            Task<IEnumerable<ProductDto>> GetTopSellingProductsAsync(int count);
+            Task<IEnumerable<ProductDto>> GetNewArrivalProductsAsync(int count);
     }
 }

@@ -1,16 +1,10 @@
 ﻿using AutoMapper;
 using Product.Application.Interfaces.Base;
 using Product.Core.IRepositories.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Product.Application.Services.Base
 {
-    public class ApplicationService<TEntity, TDto, TCreateDto, TUpdateDto> : IApplicationService<TDto, TCreateDto, TUpdateDto>
-    where TEntity : class
+    public class ApplicationService<TEntity, TDto, TCreateDto, TUpdateDto> : IApplicationService<TDto, TCreateDto, TUpdateDto> where TEntity : class
     {
         protected readonly IRepository<TEntity> _repository;
         protected readonly IMapper _mapper;

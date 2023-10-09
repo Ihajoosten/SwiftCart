@@ -14,20 +14,24 @@ using Product.Application.Dto.Review;
 using Product.Application.Dto.ProductTag;
 using Product.Application.Dto.Tag;
 using Product.Application.Dto.ItemImage;
+using Product.Infrastructure.Data.Interface;
+using Product.Infrastructure.Data;
 
 using AutoMapper;
+using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
-var configuraiton = builder.Configuration;
+var config = builder.Configuration;
 
 // Add services to the container.
 services.AddControllers();
 services.AddEndpointsApiExplorer();
 services.AddSwaggerGen();
 
-// Register Services
-services.AddScoped(typeof(IApplicationService<,,>), typeof(ApplicationService<,,,>));
+// Service Dependencies
+// services.AddScoped(typeof(IApplicationService<,,>), typeof(ApplicationService<,,,>));
 services.AddScoped<IAppProductService, AppProductService>();
 services.AddScoped<IAppBrandService, AppBrandService>();
 services.AddScoped<IAppCategoryService, AppCategoryService>();
@@ -36,9 +40,7 @@ services.AddScoped<IAppItemImageService, AppItemImageService>();
 services.AddScoped<IAppTagService, AppTagService>();
 services.AddScoped<IAppProductTagService, AppProductTagService>();
 
-
-
-// Register Repositories
+// Repository Dependencies
 services.AddScoped(typeof(IRepository<>), typeof(EFRepository<>));
 services.AddScoped<IProductRepository, EFProductRepository>();
 services.AddScoped<IBrandRepository, EFBrandRepository>();
@@ -48,6 +50,11 @@ services.AddScoped<IItemImageRepository, EFItemImageRepository>();
 services.AddScoped<ITagRepository, EFTagRepository>();
 services.AddScoped<IProductTagRepository, EFProductTagRepository>();
 
+// Database Dependencies
+services.AddScoped<IProductContext, ProductContext>();
+services.AddDbContext<ProductContext>(options => options.UseNpgsql(config.GetConnectionString("LocalDevelopment")));
+
+// Configuration Mapper Entity <> Dto
 var mapperConfig = new MapperConfiguration(cfg =>
 {
     cfg.CreateMap<Product.Core.Entities.Product, ProductDto>();
