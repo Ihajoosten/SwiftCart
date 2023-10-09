@@ -5,6 +5,6 @@ namespace Product.Core.IRepositories
 {
     public interface ITagRepository : IRepository<Tag>
     {
-        Task<IEnumerable<Tag>> GetPopularTagsAsync(int count);
+        Task<IEnumerable<Tag?>?> GetPopularTagsAsync(int count);
     }
 }

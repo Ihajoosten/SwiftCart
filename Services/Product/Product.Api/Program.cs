@@ -18,11 +18,11 @@ services.AddScoped(typeof(IRepository<>), typeof(EFRepository<>));
 services.AddScoped<IProductRepository, EFProductRepository>();
 services.AddScoped<IBrandRepository, EFBrandRepository>();
 
-//services.AddScoped<ICategoryRepository, EFCategoryRepository>();
-//services.AddScoped<IReviewRepository, EFReviewRepository>();
-//services.AddScoped<IImageRepository, EFImageRepository>();
-//services.AddScoped<ITagRepository, EFTagRepository>();
-//services.AddScoped<IProductTagRepository, EFProductTagRepository>();
+services.AddScoped<ICategoryRepository, EFCategoryRepository>();
+services.AddScoped<IReviewRepository, EFReviewRepository>();
+services.AddScoped<IImageRepository, EFImageRepository>();
+services.AddScoped<ITagRepository, EFTagRepository>();
+services.AddScoped<IProductTagRepository, EFProductTagRepository>();
 
 var app = builder.Build();
 

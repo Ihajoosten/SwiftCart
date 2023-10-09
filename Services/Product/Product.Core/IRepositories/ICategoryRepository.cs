@@ -10,6 +10,6 @@ namespace Product.Core.IRepositories
 {
     public interface ICategoryRepository : IRepository<Category>
     {
-        Task<IEnumerable<Category>> GetMainCategoriesAsync();
+        Task<IEnumerable<Category?>?> GetMainCategoriesAsync();
     }
 }

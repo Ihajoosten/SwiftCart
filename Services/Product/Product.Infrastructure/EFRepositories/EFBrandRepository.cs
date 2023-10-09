@@ -13,7 +13,6 @@ namespace Product.Infrastructure.EFRepositories
 
         public async Task<IEnumerable<Brand?>?> GetPopularBrandsAsync(int count)
         {
-            
             var allBrands = await GetAllAsync();
             var filteredBrands = allBrands.OrderByDescending(x => x?.Products.Count).Take(count);
             return filteredBrands;
