@@ -10,6 +10,7 @@ using Product.Application.Services.Base;
 using Product.Application.Dto.Brand;
 using Product.Application.Dto.Product;
 using Product.Application.Dto.Category;
+using Product.Application.Dto.Review;
 
 using AutoMapper;
 
@@ -27,6 +28,8 @@ services.AddScoped(typeof(IApplicationService<,,>), typeof(ApplicationService<,,
 services.AddScoped<IAppProductService, AppProductService>();
 services.AddScoped<IAppBrandService, AppBrandService>();
 services.AddScoped<IAppCategoryService, AppCategoryService>();
+services.AddScoped<IAppReviewService, AppReviewService>();
+
 
 // Register Repositories
 services.AddScoped(typeof(IRepository<>), typeof(EFRepository<>));
@@ -43,6 +46,7 @@ var mapperConfig = new MapperConfiguration(cfg =>
     cfg.CreateMap<Product.Core.Entities.Product, ProductDto>();
     cfg.CreateMap<Brand, BrandDto>();
     cfg.CreateMap<Category, CategoryDto>();
+    cfg.CreateMap<Review, ReviewDto>();
 });
 
 var mapper = mapperConfig.CreateMapper();

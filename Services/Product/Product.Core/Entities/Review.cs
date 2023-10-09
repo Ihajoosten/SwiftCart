@@ -7,6 +7,8 @@ namespace Product.Core.Entities
         public required int Rating { get; set; }
         public required string Comment { get; set; }
         public required int UserId { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
 
         // Foreign key
         public required int ProductId { get; set; }
