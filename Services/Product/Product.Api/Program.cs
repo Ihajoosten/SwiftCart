@@ -11,6 +11,9 @@ using Product.Application.Dto.Brand;
 using Product.Application.Dto.Product;
 using Product.Application.Dto.Category;
 using Product.Application.Dto.Review;
+using Product.Application.Dto.ProductTag;
+using Product.Application.Dto.Tag;
+using Product.Application.Dto.ItemImage;
 
 using AutoMapper;
 
@@ -31,6 +34,8 @@ services.AddScoped<IAppCategoryService, AppCategoryService>();
 services.AddScoped<IAppReviewService, AppReviewService>();
 services.AddScoped<IAppItemImageService, AppItemImageService>();
 services.AddScoped<IAppTagService, AppTagService>();
+services.AddScoped<IAppProductTagService, AppProductTagService>();
+
 
 
 // Register Repositories
@@ -49,6 +54,9 @@ var mapperConfig = new MapperConfiguration(cfg =>
     cfg.CreateMap<Brand, BrandDto>();
     cfg.CreateMap<Category, CategoryDto>();
     cfg.CreateMap<Review, ReviewDto>();
+    cfg.CreateMap<ItemImage, ItemImageDto>();
+    cfg.CreateMap<Tag, TagDto>();
+    cfg.CreateMap<ProductTag, ProductTagDto>();
 });
 
 var mapper = mapperConfig.CreateMapper();

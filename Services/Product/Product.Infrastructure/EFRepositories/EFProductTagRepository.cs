@@ -1,4 +1,5 @@
-﻿using Product.Core.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using Product.Core.Entities;
 using Product.Core.IRepositories;
 using Product.Infrastructure.Data.Interface;
 using Product.Infrastructure.EFRepositories.Base;
@@ -11,11 +12,20 @@ namespace Product.Infrastructure.EFRepositories
         {
         }
 
-        public async Task<IEnumerable<ProductTag?>?> GetProductTagsByProductIdAsync(int productId)
+        public async Task<IEnumerable<Core.Entities.Product>> GetProductsByTagAsync(int tagId)
         {
-            var allProductTags = await GetAllAsync();
-            var filteredTags = allProductTags.Where(pt => pt?.ProductId == productId).ToList();
-            return filteredTags;
+            return await _context.ProductTags
+                .Where(pt => pt.TagId == tagId)
+                .Select(pt => pt.Product)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Tag>> GetTagsByProductAsync(int productId)
+        {
+            return await _context.ProductTags
+                .Where(pt => pt.ProductId == productId)
+                .Select(pt => pt.Tag)
+                .ToListAsync();
         }
     }
 }

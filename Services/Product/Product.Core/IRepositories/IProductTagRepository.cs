@@ -5,6 +5,7 @@ namespace Product.Core.IRepositories
 {
     public interface IProductTagRepository : IRepository<ProductTag>
     {
-        Task<IEnumerable<ProductTag?>?> GetProductTagsByProductIdAsync(int productId);
+        Task<IEnumerable<Core.Entities.Product>> GetProductsByTagAsync(int tagId);
+        Task<IEnumerable<Tag>> GetTagsByProductAsync(int productId);
     }
 }
