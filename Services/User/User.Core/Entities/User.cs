@@ -9,5 +9,4 @@ namespace User.Core.Entities
         public required string PasswordHash { get; set; }
         public virtual ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
     }
-
 }

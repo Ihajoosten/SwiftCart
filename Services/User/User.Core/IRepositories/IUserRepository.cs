@@ -1,4 +1,5 @@
-﻿using User.Core.IRepositories.Base;
+﻿using User.Core.Entities;
+using User.Core.IRepositories.Base;
 
 namespace User.Core.IRepositories
 {
@@ -6,6 +7,7 @@ namespace User.Core.IRepositories
     {
         Task<Entities.User?> GetByUsernameAsync(string username);
         Task<Entities.User?> GetByEmailAsync(string email);
-        Task<IEnumerable<Entities.User>> GetUsersByRoleAsync(string roleName);
+        Task<IEnumerable<Entities.User>> GetByRoleAsync(string roleName);
+        Task<IEnumerable<Role>> GetRolesForUserAsync(int userId);
     }
 }

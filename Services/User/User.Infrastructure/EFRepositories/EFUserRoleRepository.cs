@@ -1,36 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using User.Core.Entities;
 using User.Core.IRepositories;
-using User.Infrastructure.Data;
+using User.Infrastructure.Data.Interface;
+using User.Infrastructure.EFRepositories.Base;
 
 namespace User.Infrastructure.EFRepositories
 {
-    public class EFUserRoleRepository : IUserRoleRepository
+    public class EFUserRoleRepository : EFRepository<UserRole>, IUserRoleRepository
     {
-        private readonly UserContext _context;
-
-        public EFUserRoleRepository(UserContext context)
-        {
-            _context = context;
-        }   
-        public async Task AddUserToRoleAsync(Core.Entities.User user, Role role)
-        {
-            var userRole = new UserRole { UserId = user.Id, RoleId = role.Id };
-            _context.UserRoles.Add(userRole);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task RemoveUserFromRoleAsync(Core.Entities.User user, Role role)
-        {
-            var userRole = await _context.UserRoles
-                .FirstOrDefaultAsync(ur => ur.UserId == user.Id && ur.RoleId == role.Id);
-
-            if (userRole != null)
-            {
-                _context.UserRoles.Remove(userRole);
-                await _context.SaveChangesAsync();
-            }
-        }
+        public EFUserRoleRepository(IUserContext context) : base(context) { }
 
         public async Task<IReadOnlyList<Role?>?> GetRolesForUserAsync(int userId)
         {
