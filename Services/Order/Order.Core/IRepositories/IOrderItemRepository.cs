@@ -5,6 +5,6 @@ namespace Order.Core.IRepositories
     public interface IOrderItemRepository : IRepository<OrderItem>
     {
         Task<IEnumerable<OrderItem?>?> GetOrderItemsByOrderIdAsync(int orderId);
-        Task<IEnumerable<OrderItem?>?> GetTopSellingProductsAsync(int count);
+        Task<IEnumerable<OrderItem?>?> GetTopSellingOrderItemsAsync(int count);
     }
 }

@@ -1,4 +1,5 @@
-﻿using Order.Core.IRepositories.Base;
+﻿using Order.Core.Entities;
+using Order.Core.IRepositories.Base;
 
 namespace Order.Core.IRepositories
 {
@@ -10,5 +11,7 @@ namespace Order.Core.IRepositories
         Task<IEnumerable<Entities.Order?>?> GetCompletedOrdersAsync();
         Task<IEnumerable<Entities.Order?>?> GetDeliveredOrdersAsync();
         Task<IEnumerable<Entities.Order?>?> GetCanceledOrdersAsync();
+        Task<IEnumerable<OrderStatusHistory>> GetOrderStatusHistoryAsync(int orderId);
+        Task UpdateOrderStatusAsync(int orderId, OrderStatus newStatus);
     }
 }

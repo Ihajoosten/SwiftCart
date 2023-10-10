@@ -19,7 +19,7 @@ namespace Order.Infrastructure.EFRepositories
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<OrderItem?>?> GetTopSellingProductsAsync(int count)
+        public async Task<IEnumerable<OrderItem?>?> GetTopSellingOrderItemsAsync(int count)
         {
             return await _context.OrderItems
                 .OrderByDescending(oi => oi.Quantity)

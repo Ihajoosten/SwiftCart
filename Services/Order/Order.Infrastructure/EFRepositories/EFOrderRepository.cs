@@ -54,5 +54,22 @@ namespace Order.Infrastructure.EFRepositories
                 .Where(o => o.OrderStatus == OrderStatus.Canceled)
                 .ToListAsync();
         }
+
+        public async Task<IEnumerable<OrderStatusHistory>> GetOrderStatusHistoryAsync(int orderId)
+        {
+            return await _context.OrderStatusHistories
+                .Where(history => history.OrderId == orderId)
+                .ToListAsync();
+        }
+
+        public async Task UpdateOrderStatusAsync(int orderId, OrderStatus newStatus)
+        {
+            var order = await _context.Orders.FindAsync(orderId);
+            if (order != null)
+            {
+                order.OrderStatus = newStatus;
+                await _context.SaveChangesAsync();
+            }
+        }
     }
 }
