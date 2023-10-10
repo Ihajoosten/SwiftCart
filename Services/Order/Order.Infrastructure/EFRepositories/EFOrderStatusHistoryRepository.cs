@@ -23,7 +23,7 @@ namespace Order.Infrastructure.EFRepositories
         {
             return await _context.OrderStatusHistories
                 .Where(osh => osh.OrderId == orderId)
-                .OrderByDescending(osh => osh.CreatedAt)
+                .OrderByDescending(osh => osh.DateChanged)
                 .FirstOrDefaultAsync();
         }
     }
