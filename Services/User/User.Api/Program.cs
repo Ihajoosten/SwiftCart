@@ -1,20 +1,22 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using User.Infrastructure.Data;
-using User.Infrastructure.Data.Interface;
-using User.Core.IRepositories.Base;
-using User.Infrastructure.EFRepositories.Base;
-using User.Core.IRepositories;
-using User.Infrastructure.EFRepositories;
-using User.Application.Services;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using User.Api.Mappings;
+using User.Application.Dto.Role;
+using User.Application.Dto.User;
 using User.Application.Interfaces;
 using User.Application.Interfaces.Base;
-using User.Application.Dto.User;
-using User.Application.Dto.Role;
-using User.Application.Dto.UserRole;
+using User.Application.Services;
 using User.Application.Services.Base;
 using User.Core.Entities;
-using User.Api.Mappings;
+using User.Core.IRepositories;
+using User.Core.IRepositories.Base;
+using User.Infrastructure.Data;
+using User.Infrastructure.Data.Interface;
+using User.Infrastructure.EFRepositories;
+using User.Infrastructure.EFRepositories.Base;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -24,11 +26,13 @@ var config = builder.Configuration;
 services.AddScoped<IUserContext, UserContext>();
 services.AddDbContext<UserContext>(options => options.UseNpgsql(config.GetConnectionString("UserApiConnection")));
 
+// Auth Dependencies
+services.AddScoped<IAuthAppService, AuthAppService>();
+services.AddScoped<IPasswordAppService, PasswordAppService>();
 
 // Service Dependencies
 services.AddTransient<IApplicationService<UserDto, CreateUserDto, UpdateUserDto>, ApplicationService<User.Core.Entities.User, UserDto, CreateUserDto, UpdateUserDto>>();
 services.AddTransient<IApplicationService<RoleDto, CreateRoleDto, UpdateRoleDto>, ApplicationService<Role, RoleDto, CreateRoleDto, UpdateRoleDto>>();
-services.AddTransient<IApplicationService<UserRoleDto, CreateUserRoleDto, UpdateUserRoleDto>, ApplicationService<UserRole, UserRoleDto, CreateUserRoleDto, UpdateUserRoleDto>>();
 
 services.AddScoped<IUserAppService, UserAppService>();
 services.AddScoped<IRoleAppService, RoleAppService>();
@@ -55,7 +59,24 @@ services.AddSingleton(serviceProvider => new MapperConfiguration(cfg =>
     cfg.AddProfile<UpdateDtoMappingProfile>();
 }).CreateMapper());
 
-// Add services to the container.
+// Add core services to the container.
+services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        .AddJwtBearer(options =>
+        {
+            // Configure JWT validation parameters
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"])),
+                ValidIssuer = config["Jwt:Issuer"],
+                ValidAudience = config["Jwt:Audience"]
+            };
+        });
+
+services.AddAuthorization();
 services.AddControllers();
 services.AddEndpointsApiExplorer();
 services.AddSwaggerGen();
@@ -71,6 +92,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

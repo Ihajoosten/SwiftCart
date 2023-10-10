@@ -1,10 +1,11 @@
 ﻿using User.Core.Entities;
-using User.Core.IRepositories.Base;
 
 namespace User.Core.IRepositories
 {
-    public interface IUserRoleRepository : IRepository<UserRole>
+    public interface IUserRoleRepository
     {
+        Task<object> AddUserToRoleAsync(int userId, int roleId);
+        Task<bool> RemoveUserFromRoleAsync(int userId, int roleId);
         Task<IReadOnlyList<Role?>?> GetRolesForUserAsync(int userId);
         Task<IReadOnlyList<Entities.User?>?> GetUsersInRoleAsync(string roleName);
     }

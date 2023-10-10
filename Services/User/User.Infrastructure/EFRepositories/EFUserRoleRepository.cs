@@ -1,14 +1,40 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using User.Core.Entities;
 using User.Core.IRepositories;
-using User.Infrastructure.Data.Interface;
-using User.Infrastructure.EFRepositories.Base;
+using User.Infrastructure.Data;
 
 namespace User.Infrastructure.EFRepositories
 {
-    public class EFUserRoleRepository : EFRepository<UserRole>, IUserRoleRepository
+    public class EFUserRoleRepository : IUserRoleRepository
     {
-        public EFUserRoleRepository(IUserContext context) : base(context) { }
+        private readonly UserContext _context;
+
+        public EFUserRoleRepository(UserContext context)
+        {
+            _context = context;
+        }
+
+        public async Task<object> AddUserToRoleAsync(int userId, int roleId)
+        {
+            var userRole = new UserRole { UserId = userId, RoleId = roleId };
+            var created = await _context.UserRoles.AddAsync(userRole);
+            await _context.SaveChangesAsync();
+            return created;
+        }
+
+        public async Task<bool> RemoveUserFromRoleAsync(int userId, int roleId)
+        {
+            var userRole = await _context.UserRoles
+                .FirstOrDefaultAsync(ur => ur.UserId == userId && ur.RoleId == roleId);
+
+            if (userRole != null)
+            {
+                _context.UserRoles.Remove(userRole);
+                var result = await _context.SaveChangesAsync();
+                return result > 0;
+            }
+            return false;
+        }
 
         public async Task<IReadOnlyList<Role?>?> GetRolesForUserAsync(int userId)
         {

@@ -8,7 +8,5 @@ namespace User.Application.Interfaces
     {
         Task<UserDto?> GetUserByUsernameAsync(string username);
         Task<UserDto?> GetUserByEmailAsync(string email);
-        Task<IEnumerable<UserDto>> GetUsersInRoleAsync(string roleName);
-        Task<IEnumerable<RoleDto>> GetRolesForUserAsync(int userId);
     }
 }

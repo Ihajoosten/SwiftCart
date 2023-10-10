@@ -3,19 +3,30 @@ using User.Application.Dto.Role;
 using User.Application.Dto.User;
 using User.Application.Dto.UserRole;
 using User.Application.Interfaces;
-using User.Application.Services.Base;
-using User.Core.Entities;
 using User.Core.IRepositories;
 
 namespace User.Application.Services
 {
-    public class UserRoleAppService : ApplicationService<UserRole, UserRoleDto, CreateUserRoleDto, UpdateUserRoleDto>, IUserRoleAppService
+    public class UserRoleAppService : IUserRoleAppService
     {
         private readonly IUserRoleRepository _userRoleRepository;
+        private readonly IMapper _mapper;
 
-        public UserRoleAppService(IUserRoleRepository userRoleRepository, IMapper mapper) : base(userRoleRepository, mapper)
+        public UserRoleAppService(IUserRoleRepository userRoleRepository, IMapper mapper)
         {
-            _userRoleRepository = userRoleRepository ?? throw new ArgumentNullException(nameof(userRoleRepository));
+            _userRoleRepository = userRoleRepository;
+            _mapper = mapper;
+        }
+
+        public async Task<UserRoleDto> AddUserToRoleAsync(int userId, int roleId)
+        {
+            var created = await _userRoleRepository.AddUserToRoleAsync(userId, roleId);
+            return _mapper.Map<UserRoleDto>(created);
+        }
+
+        public async Task<bool> RemoveUserFromRoleAsync(int userId, int roleId)
+        {
+            return await _userRoleRepository.RemoveUserFromRoleAsync(userId, roleId);
         }
 
         public async Task<IEnumerable<RoleDto>> GetRolesForUserAsync(int userId)

@@ -7,7 +7,5 @@ namespace User.Core.IRepositories
     {
         Task<Entities.User?> GetByUsernameAsync(string username);
         Task<Entities.User?> GetByEmailAsync(string email);
-        Task<IEnumerable<Entities.User>> GetByRoleAsync(string roleName);
-        Task<IEnumerable<Role>> GetRolesForUserAsync(int userId);
     }
 }

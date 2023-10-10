@@ -10,10 +10,11 @@ namespace User.Application.Services
     public class UserAppService : ApplicationService<Core.Entities.User, UserDto, CreateUserDto, UpdateUserDto>, IUserAppService
     {
         private readonly IUserRepository _userRepository;
-
-        public UserAppService(IUserRepository userRepository, IMapper mapper) : base(userRepository, mapper)
+        private readonly IPasswordAppService _passwordService;
+        public UserAppService(IUserRepository userRepository, IMapper mapper, IPasswordAppService passwordService) : base(userRepository, mapper)
         {
             _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
+            _passwordService = passwordService;
         }
 
         public async Task<UserDto?> GetUserByUsernameAsync(string username)
@@ -28,16 +29,14 @@ namespace User.Application.Services
             return _mapper.Map<UserDto>(user);
         }
 
-        public async Task<IEnumerable<RoleDto>> GetRolesForUserAsync(int userId)
+        public override async Task<UserDto> CreateAsync(CreateUserDto createDto)
         {
-            var roles = await _userRepository.GetRolesForUserAsync(userId);
-            return _mapper.Map<IEnumerable<RoleDto>>(roles);
-        }
+            createDto.Password = _passwordService.HashPassword(createDto.Password);
 
-        public async Task<IEnumerable<UserDto>> GetUsersInRoleAsync(string roleName)
-        {
-            var users = await _userRepository.GetByRoleAsync(roleName);
-            return _mapper.Map<IEnumerable<UserDto>>(users);
+            var entity = _mapper.Map<Core.Entities.User>(createDto);
+            entity = await _repository.AddAsync(entity);
+
+            return _mapper.Map<UserDto>(entity);
         }
     }
 }
