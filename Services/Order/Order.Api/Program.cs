@@ -24,11 +24,7 @@ var config = builder.Configuration;
 
 // Database Dependencies
 services.AddScoped<IOrderContext, OrderContext>();
-services.AddEntityFrameworkNpgsql().AddDbContext<OrderContext>(options => 
-{ 
-    options.UseNpgsql(config.GetConnectionString("OrderApiConnection"));
-    options.UseNpgsql(config.GetSection("Schema").GetSection("Orders").Value);
-});
+services.AddDbContext<OrderContext>(options => options.UseNpgsql(config.GetConnectionString("OrderApiConnection")));
 
 // Service Dependencies
 services.AddTransient<IApplicationService<OrderDto, CreateOrderDto, UpdateOrderDto>, ApplicationService<Order.Core.Entities.Order, OrderDto, CreateOrderDto, UpdateOrderDto>>();

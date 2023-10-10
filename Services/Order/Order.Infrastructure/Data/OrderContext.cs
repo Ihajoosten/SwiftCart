@@ -16,6 +16,16 @@ namespace Order.Infrastructure.Data
         public DbSet<OrderStatusHistory> OrderStatusHistories { get; set; }
         public DbSet<ShippingDetails> ShippingDetails { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Order.Core.Entities.Order>()
+                .HasOne(o => o.ShippingDetails)
+                .WithOne(sd => sd.Order)
+                .HasForeignKey<ShippingDetails>(sd => sd.OrderId);
+
+            base.OnModelCreating(modelBuilder);
+        }
+
         public override DbSet<T> Set<T>() where T : class
         {
             return base.Set<T>();

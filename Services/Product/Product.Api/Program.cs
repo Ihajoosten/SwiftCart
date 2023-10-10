@@ -27,11 +27,7 @@ var config = builder.Configuration;
 
 // Database Dependencies
 services.AddScoped<IProductContext, ProductContext>();
-services.AddEntityFrameworkNpgsql().AddDbContext<ProductContext>(options =>
-{
-    options.UseNpgsql(config.GetConnectionString("ProductApiConnection"));
-    options.UseNpgsql(config.GetSection("Schema").GetSection("Products").Value);
-});
+services.AddDbContext<ProductContext>(options => options.UseNpgsql(config.GetConnectionString("ProductApiConnection")));
 
 
 // Service Dependencies
