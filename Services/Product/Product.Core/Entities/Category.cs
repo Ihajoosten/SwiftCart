@@ -8,6 +8,6 @@ namespace Product.Core.Entities
         public bool IsMainCategory { get; set; }
 
         // Navigation property
-        public ICollection<Product> Products { get; set; }
+        public virtual ICollection<Product> Products { get; set; }
     }
 }

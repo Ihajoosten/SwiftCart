@@ -14,6 +14,6 @@ namespace Product.Core.Entities
         public required int ProductId { get; set; }
 
         // Navigation property
-        public Product Product { get; set; }
+        public virtual Product Product { get; set; }
     }
 }

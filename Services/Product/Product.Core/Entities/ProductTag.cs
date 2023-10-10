@@ -8,7 +8,7 @@ namespace Product.Core.Entities
         public required int TagId { get; set; }
 
         // Navigation properties
-        public Product Product { get; set; }
-        public Tag Tag { get; set; }
+        public virtual Product Product { get; set; }
+        public virtual Tag Tag { get; set; }
     }
 }

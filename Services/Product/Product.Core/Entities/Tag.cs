@@ -7,6 +7,6 @@ namespace Product.Core.Entities
         public required string Name { get; set; }
 
         // Navigation property
-        public ICollection<ProductTag> ProductTags { get; set; }
+        public virtual ICollection<ProductTag> ProductTags { get; set; }
     }
 }
