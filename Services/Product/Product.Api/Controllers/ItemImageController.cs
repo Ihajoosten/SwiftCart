@@ -18,48 +18,121 @@ namespace Product.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllItemImages()
         {
-            var products = await _itemImageService.GetAllAsync();
-            return Ok(products);
+            try
+            {
+                var images = await _itemImageService.GetAllAsync();
+                if (images == null || !images.Any())
+                {
+                    return NotFound();
+                }
+                return Ok(images);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                return StatusCode(500, "Internal Server Error");
+            }
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetItemImageById(int id)
         {
-            var product = await _itemImageService.GetByIdAsync(id);
-            if (product == null)
+            try
             {
-                return NotFound();
-            }
+                var image = await _itemImageService.GetByIdAsync(id);
+                if (image == null)
+                {
+                    return NotFound();
+                }
 
-            return Ok(product);
+                return Ok(image);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                return StatusCode(500, "Internal Server Error");
+            }
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateItemImage([FromBody] CreateItemImageDto createDto)
         {
-            var createdProduct = await _itemImageService.CreateAsync(createDto);
-            return CreatedAtAction(nameof(GetItemImageById), new { id = createdProduct.Id }, createdProduct);
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                var createdImage = await _itemImageService.CreateAsync(createDto);
+                return CreatedAtAction(nameof(GetItemImageById), new { id = createdImage.Id }, createdImage);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                return StatusCode(500, "Internal Server Error");
+            }
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateItemImage(int id, [FromBody] UpdateItemImageDto updateDto)
         {
-            await _itemImageService.UpdateAsync(id, updateDto);
-            return NoContent();
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                var udpatedImage = await _itemImageService.UpdateAsync(id, updateDto);
+                if (!udpatedImage)
+                {
+                    return StatusCode(422, "Could Not Update Image - Unprocessable Content");
+                }
+                return Ok(udpatedImage);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                return StatusCode(500, "Internal Server Error");
+            }
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteItemImage(int id)
         {
-            await _itemImageService.DeleteAsync(id);
-            return NoContent();
+            try
+            {
+                var deletedImage = await _itemImageService.DeleteAsync(id);
+                if (!deletedImage)
+                {
+                    return StatusCode(422, "Could Not Delete Image - Unprocessable Content");
+                }
+
+                return Ok(deletedImage);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                return StatusCode(500, "Internal Server Error");
+            }
         }
 
         [HttpGet("product/{productId}/images")]
         public async Task<IActionResult> GetImagesByProductId(int productId)
         {
-            var images = await _itemImageService.GetImagesByProductIdAsync(productId);
-            return Ok(images);
+            try
+            {
+                var images = await _itemImageService.GetImagesByProductIdAsync(productId);
+                if (images == null || !images.Any())
+                {
+                    return NotFound();
+                }
+                return Ok(images);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                return StatusCode(500, "Internal Server Error");
+            }
         }
     }
 }

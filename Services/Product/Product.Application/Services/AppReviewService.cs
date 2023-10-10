@@ -38,16 +38,16 @@ namespace Product.Application.Services
             return _mapper.Map<ReviewDto>(entity);
         }
 
-        public override async Task UpdateAsync(int id, UpdateReviewDto updateDto)
+        public override async Task<bool> UpdateAsync(int id, UpdateReviewDto updateDto)
         {
             updateDto.UpdatedAt = updateDto.UpdatedAt == default ? DateTime.UtcNow : updateDto.UpdatedAt;
 
             var entity = await _reviewRepository.GetByIdAsync(id);
-            if (entity == null) return;
+            if (entity == null) return false;
 
             _mapper.Map(updateDto, entity);
 
-            await _reviewRepository.UpdateAsync(entity);
+            return await _reviewRepository.UpdateAsync(entity);
         }
     }
 }

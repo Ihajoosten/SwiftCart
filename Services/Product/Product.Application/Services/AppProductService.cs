@@ -62,16 +62,16 @@ namespace Product.Application.Services
             return _mapper.Map<ProductDto>(entity);
         }
 
-        public override async Task UpdateAsync(int id, UpdateProductDto updateDto)
+        public override async Task<bool> UpdateAsync(int id, UpdateProductDto updateDto)
         {
             updateDto.UpdatedAt = updateDto.UpdatedAt == default ? DateTime.UtcNow : updateDto.UpdatedAt;
 
             var entity = await _repository.GetByIdAsync(id);
-            if (entity == null) return;
+            if (entity == null) return false;
 
             _mapper.Map(updateDto, entity);
 
-            await _repository.UpdateAsync(entity);
+            return await _repository.UpdateAsync(entity);
         }
     }
 }

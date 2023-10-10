@@ -13,7 +13,7 @@ namespace Order.Core.Entities
         public required string ContactEmail { get; set; }
         public required DateTime? ShippedDate { get; set; }
         public required DateTime? DeliveredDate { get; set; }
-        
+
         // Foreign key
         public required int OrderId { get; set; }
         // Navigation properties

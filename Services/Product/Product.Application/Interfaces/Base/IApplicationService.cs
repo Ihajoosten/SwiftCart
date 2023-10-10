@@ -6,7 +6,7 @@ namespace Product.Application.Interfaces.Base
         Task<IEnumerable<TDto>> GetAllAsync();
         Task<TDto?> GetByIdAsync(int id);
         Task<TDto> CreateAsync(TCreateDto createDto);
-        Task UpdateAsync(int id, TUpdateDto updateDto);
-        Task DeleteAsync(int id);
+        Task<bool> UpdateAsync(int id, TUpdateDto updateDto);
+        Task<bool> DeleteAsync(int id);
     }
 }

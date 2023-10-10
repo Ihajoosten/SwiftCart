@@ -34,22 +34,22 @@ namespace Product.Application.Services.Base
             return _mapper.Map<TDto>(entity);
         }
 
-        public virtual async Task UpdateAsync(int id, TUpdateDto updateDto)
+        public virtual async Task<bool> UpdateAsync(int id, TUpdateDto updateDto)
         {
             var entity = await _repository.GetByIdAsync(id);
-            if (entity == null) return;
+            if (entity == null) return false;
 
             _mapper.Map(updateDto, entity);
 
-            await _repository.UpdateAsync(entity);
+            return await _repository.UpdateAsync(entity);
         }
 
-        public virtual async Task DeleteAsync(int id)
+        public virtual async Task<bool> DeleteAsync(int id)
         {
             var entity = await _repository.GetByIdAsync(id);
-            if (entity == null) return;
+            if (entity == null) return false;
 
-            await _repository.DeleteAsync(entity);
+            return await _repository.DeleteAsync(entity);
         }
     }
 }
