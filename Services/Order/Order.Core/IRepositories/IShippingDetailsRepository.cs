@@ -5,6 +5,6 @@ namespace Order.Core.IRepositories
 {
     public interface IShippingDetailsRepository : IRepository<ShippingDetails>
     {
-        Task<ShippingDetails> GetShippingDetailsByOrderIdAsync(int orderId);
+        Task<ShippingDetails?> GetShippingDetailsByOrderIdAsync(int orderId);
     }
 }

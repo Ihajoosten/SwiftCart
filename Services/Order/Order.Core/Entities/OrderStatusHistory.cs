@@ -7,7 +7,7 @@ namespace Order.Core.Entities
         public required int OrderId { get; set; }
         public required OrderStatus OldStatus { get; set; }
         public required OrderStatus NewStatus { get; set; }
-        public required DateTime ChangeDate { get; set; }
+        public required DateTime CreatedAt { get; set; }
 
         // Navigation properties
         public virtual Order Order { get; set; }
@@ -16,8 +16,8 @@ namespace Order.Core.Entities
     public enum OrderStatus
     {
         Pending,
-        Shipped,
         Delivered,
-        Canceled
+        Canceled,
+        Completed
     }
 }
