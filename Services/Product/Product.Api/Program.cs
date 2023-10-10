@@ -1,5 +1,7 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Product.Api.Mappings;
 using Product.Application.Dto.Brand;
 using Product.Application.Dto.Category;
 using Product.Application.Dto.ItemImage;
@@ -8,7 +10,9 @@ using Product.Application.Dto.ProductTag;
 using Product.Application.Dto.Review;
 using Product.Application.Dto.Tag;
 using Product.Application.Interfaces;
+using Product.Application.Interfaces.Base;
 using Product.Application.Services;
+using Product.Application.Services.Base;
 using Product.Core.Entities;
 using Product.Core.IRepositories;
 using Product.Core.IRepositories.Base;
@@ -24,9 +28,18 @@ var config = builder.Configuration;
 
 // Database Dependencies
 services.AddScoped<IProductContext, ProductContext>();
-builder.Services.AddDbContext<IProductContext, ProductContext>(o => o.UseNpgsql(builder.Configuration.GetConnectionString("LocalDevelopment")));
+services.AddEntityFrameworkNpgsql().AddDbContext<ProductContext>(options => options.UseNpgsql(config.GetConnectionString("ProductApiConnection")));
+
 
 // Service Dependencies
+services.AddTransient<IApplicationService<ProductDto, CreateProductDto, UpdateProductDto>, ApplicationService<Product.Core.Entities.Product, ProductDto, CreateProductDto, UpdateProductDto>>();
+services.AddTransient<IApplicationService<BrandDto, CreateBrandDto, UpdateBrandDto>, ApplicationService<Brand, BrandDto, CreateBrandDto, UpdateBrandDto>>();
+services.AddTransient<IApplicationService<CategoryDto, CreateCategoryDto, UpdateCategoryDto>, ApplicationService<Category, CategoryDto, CreateCategoryDto, UpdateCategoryDto>>();
+services.AddTransient<IApplicationService<ReviewDto, CreateReviewDto, UpdateReviewDto>, ApplicationService<Review, ReviewDto, CreateReviewDto, UpdateReviewDto>>();
+services.AddTransient<IApplicationService<ItemImageDto, CreateItemImageDto, UpdateItemImageDto>, ApplicationService<ItemImage, ItemImageDto, CreateItemImageDto, UpdateItemImageDto>>();
+services.AddTransient<IApplicationService<TagDto, CreateTagDto, UpdateTagDto>, ApplicationService<Tag, TagDto, CreateTagDto, UpdateTagDto>>();
+services.AddTransient<IApplicationService<ProductTagDto, CreateProductTagDto, UpdateProductTagDto>, ApplicationService<ProductTag, ProductTagDto, CreateProductTagDto, UpdateProductTagDto>>();
+
 services.AddScoped<IAppProductService, AppProductService>();
 services.AddScoped<IAppBrandService, AppBrandService>();
 services.AddScoped<IAppCategoryService, AppCategoryService>();
@@ -46,19 +59,19 @@ services.AddScoped<ITagRepository, EFTagRepository>();
 services.AddScoped<IProductTagRepository, EFProductTagRepository>();
 
 // Configuration Mapper Entity <> Dto
-var mapperConfig = new MapperConfiguration(cfg =>
+services.AddAutoMapper(cfg =>
 {
-    cfg.CreateMap<Product.Core.Entities.Product, ProductDto>();
-    cfg.CreateMap<Brand, BrandDto>();
-    cfg.CreateMap<Category, CategoryDto>();
-    cfg.CreateMap<Review, ReviewDto>();
-    cfg.CreateMap<ItemImage, ItemImageDto>();
-    cfg.CreateMap<Tag, TagDto>();
-    cfg.CreateMap<ProductTag, ProductTagDto>();
+    cfg.AddProfile<DtoMappingProfile>();
+    cfg.AddProfile<CreateDtoMappingProfile>();
+    cfg.AddProfile<UpdateDtoMappingProfile>();
 });
 
-var mapper = mapperConfig.CreateMapper();
-services.AddSingleton(mapper);
+services.AddSingleton(serviceProvider => new MapperConfiguration(cfg =>
+{
+    cfg.AddProfile<DtoMappingProfile>();
+    cfg.AddProfile<CreateDtoMappingProfile>();
+    cfg.AddProfile<UpdateDtoMappingProfile>();
+}).CreateMapper());
 
 // Add services to the container.
 services.AddControllers();
