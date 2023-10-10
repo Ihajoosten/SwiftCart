@@ -6,10 +6,10 @@ namespace Order.Infrastructure.Data.Interface
 {
     public interface IOrderContext
     {
-        DbSet<Core.Entities.Order> Products { get; set; }
-        DbSet<OrderItem> Brands { get; set; }
-        DbSet<OrderStatusHistory> Categories { get; set; }
-        DbSet<ShippingDetails> Reviews { get; set; }
+        DbSet<Core.Entities.Order> Orders { get; set; }
+        DbSet<OrderItem> OrderItems { get; set; }
+        DbSet<OrderStatusHistory> OrderStatusHistories { get; set; }
+        DbSet<ShippingDetails> ShippingDetails { get; set; }
 
         Task<int> SaveChangesAsync();
         DbSet<T> Set<T>() where T : class;

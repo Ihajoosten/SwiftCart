@@ -11,10 +11,10 @@ namespace Order.Infrastructure.Data
 
         public OrderContext(DbContextOptions<OrderContext> options) : base(options) { }
 
-        public DbSet<Core.Entities.Order> Products { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public DbSet<OrderItem> Brands { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public DbSet<OrderStatusHistory> Categories { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public DbSet<ShippingDetails> Reviews { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public DbSet<Core.Entities.Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<OrderStatusHistory> OrderStatusHistories { get; set; }
+        public DbSet<ShippingDetails> ShippingDetails { get; set; }
 
         public override DbSet<T> Set<T>() where T : class
         {
