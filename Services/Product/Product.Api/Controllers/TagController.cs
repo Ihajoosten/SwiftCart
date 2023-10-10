@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Product.Application.Dto.Review;
 using Product.Application.Dto.Tag;
 using Product.Application.Interfaces;
 

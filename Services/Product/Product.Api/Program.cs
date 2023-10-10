@@ -1,5 +1,4 @@
 using AutoMapper;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Product.Api.Mappings;
 using Product.Application.Dto.Brand;

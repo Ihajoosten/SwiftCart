@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Product.Application.Dto.ItemImage;
-using Product.Application.Dto.ItemImage;
 using Product.Application.Interfaces;
 
 namespace Product.Api.Controllers
