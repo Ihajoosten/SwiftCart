@@ -1,15 +1,15 @@
 ﻿
-using System.ComponentModel.DataAnnotations;
+using User.Core.Entities;
 
 namespace User.Application.Dto.User
 {
     public class CreateUserDto
     {
-        [Required]
         public string Username { get; set; }
-        [Required]
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
         public string Email { get; set; }
-        [Required]
-        public string Password { get; set; }
+        public UserRole? Role { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
     }
 }

@@ -3,6 +3,7 @@ namespace User.Core.Entities.Base
 {
     public class BaseEntity
     {
-        public int Id { get; set; }
+        public required int Id { get; set; }
+
     }
 }

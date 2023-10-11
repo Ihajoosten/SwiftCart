@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using User.Application.Dto.Role;
+using User.Application.Dto.Address;
+using User.Application.Dto.PhoneNumber;
 using User.Application.Dto.User;
-using User.Application.Dto.UserRole;
 using User.Core.Entities;
 
 namespace User.Api.Mappings
@@ -11,8 +11,8 @@ namespace User.Api.Mappings
         public CreateDtoMappingProfile()
         {
             CreateMap<CreateUserDto, Core.Entities.User>();
-            CreateMap<CreateRoleDto, Role>();
-            CreateMap<CreateUserRoleDto, UserRole>();
+            CreateMap<CreateAddressDto, Core.Entities.Address>();
+            CreateMap<CreatePhoneNumberDto, PhoneNumber>();
         }
     }
 }

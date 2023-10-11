@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using User.Application.Dto.User;
 using User.Application.Interfaces;
+using User.Core.Entities;
 
 namespace User.Api.Controllers
 {
@@ -8,55 +10,15 @@ namespace User.Api.Controllers
     [Route("api/users")]
     public class UserController : ControllerBase
     {
-        private readonly IUserAppService _userService;
+        private readonly IAppUserService _userService;
 
-        public UserController(IUserAppService userService)
+        public UserController(IAppUserService userService)
         {
-            _userService = userService;
+            _userService = userService ?? throw new ArgumentNullException(nameof(userService));
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAllUsers()
-        {
-            try
-            {
-                var users = await _userService.GetAllAsync();
-                if (users == null || !users.Any())
-                {
-                    return NotFound();
-                }
-                return Ok(users);
-            }
-            catch (Exception ex)
-            {
-                // Log the exception
-                return StatusCode(500, "Internal Server Error");
-            }
-        }
-
-        [HttpGet("{userId}")]
-        public async Task<IActionResult?> GetUser(int userId)
-        {
-            try
-            {
-                var user = await _userService.GetByIdAsync(userId);
-
-                if (user == null)
-                {
-                    return NotFound();
-                }
-
-                return Ok(user);
-            }
-            catch (Exception ex)
-            {
-                // Log the exception
-                return StatusCode(500, "Internal Server Error");
-            }
-        }
-
-        /*[HttpPost]
-        public async Task<IActionResult?> CreateUser([FromBody] CreateUserDto createUserDto)
+        [HttpPost]
+        public async Task<IActionResult> CreateUser([FromBody] CreateUserDto createDto)
         {
             try
             {
@@ -64,19 +26,18 @@ namespace User.Api.Controllers
                 {
                     return BadRequest(ModelState);
                 }
-
-                var createdUser = await _userService.CreateAsync(createUserDto);
-                return CreatedAtAction(nameof(GetUser), new { userId = createdUser.Id }, createdUser);
+                var createdUser = await _userService.CreateAsync(createDto);
+                return CreatedAtAction("User created !", createdUser);
             }
             catch (Exception ex)
             {
                 // Log the exception
                 return StatusCode(500, "Internal Server Error");
             }
-        }*/
+        }
 
-        [HttpPut("{userId}")]
-        public async Task<IActionResult?> UpdateUser(int userId, [FromBody] UpdateUserDto updateUserDto)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateUser(int id, [FromBody] UpdateUserDto updateDto)
         {
             try
             {
@@ -84,13 +45,11 @@ namespace User.Api.Controllers
                 {
                     return BadRequest(ModelState);
                 }
-
-                var updatedUser = await _userService.UpdateAsync(userId, updateUserDto);
+                var updatedUser = await _userService.UpdateAsync(id, updateDto);
                 if (!updatedUser)
                 {
                     return StatusCode(422, "Could Not Update User - Unprocessable Content");
                 }
-
                 return Ok(updatedUser);
             }
             catch (Exception ex)
@@ -100,60 +59,18 @@ namespace User.Api.Controllers
             }
         }
 
-        [HttpDelete("{userId}")]
-        public async Task<IActionResult?> DeleteUser(int userId)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteUser(int id)
         {
             try
             {
-                var deletedUser = await _userService.DeleteAsync(userId);
+                var deletedUser = await _userService.DeleteAsync(id);
                 if (!deletedUser)
                 {
                     return StatusCode(422, "Could Not Delete User - Unprocessable Content");
                 }
 
                 return Ok(deletedUser);
-            }
-            catch (Exception ex)
-            {
-                // Log the exception
-                return StatusCode(500, "Internal Server Error");
-            }
-        }
-
-        [HttpGet("username/{username}")]
-        public async Task<IActionResult?> GetUserByUsername(string username)
-        {
-            try
-            {
-                var user = await _userService.GetUserByUsernameAsync(username);
-
-                if (user == null)
-                {
-                    return NotFound();
-                }
-
-                return Ok(user);
-            }
-            catch (Exception ex)
-            {
-                // Log the exception
-                return StatusCode(500, "Internal Server Error");
-            }
-        }
-
-        [HttpGet("email/{email}")]
-        public async Task<IActionResult?> GetUserByEmail(string email)
-        {
-            try
-            {
-                var user = await _userService.GetUserByEmailAsync(email);
-
-                if (user == null)
-                {
-                    return NotFound();
-                }
-
-                return Ok(user);
             }
             catch (Exception ex)
             {

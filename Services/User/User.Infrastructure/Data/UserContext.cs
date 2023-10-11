@@ -10,9 +10,10 @@ namespace User.Infrastructure.Data
         public UserContext() { }
 
         public UserContext(DbContextOptions<UserContext> options) : base(options) { }
-        public DbSet<User.Core.Entities.User> Users { get; set; }
-        public DbSet<Role> Roles { get; set; }
-        public DbSet<UserRole> UserRoles { get; set; }
+
+        public DbSet<Core.Entities.User> Users { get; set; }
+        public DbSet<Address> Addresses { get; set; }
+        public DbSet<PhoneNumber> PhoneNumbers { get; set; }
 
         public override DbSet<T> Set<T>() where T : class
         {

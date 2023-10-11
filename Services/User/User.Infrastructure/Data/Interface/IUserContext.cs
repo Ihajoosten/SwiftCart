@@ -6,9 +6,9 @@ namespace User.Infrastructure.Data.Interface
 {
     public interface IUserContext
     {
-        DbSet<User.Core.Entities.User> Users { get; set; }
-        DbSet<Role> Roles { get; set; }
-        DbSet<UserRole> UserRoles { get; set; }
+        DbSet<Core.Entities.User> Users { get; set; }
+        DbSet<Address> Addresses { get; set; }
+        DbSet<PhoneNumber> PhoneNumbers { get; set; }
 
         Task<int> SaveChangesAsync();
         DbSet<T> Set<T>() where T : class;
