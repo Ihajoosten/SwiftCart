@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using User.Application.Dto.User;
 using User.Application.Interfaces;
-using User.Core.Entities;
 
 namespace User.Api.Controllers
 {

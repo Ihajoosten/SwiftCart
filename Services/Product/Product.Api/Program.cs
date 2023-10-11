@@ -1,5 +1,7 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Product.Api.Mappings;
 using Product.Application.Dto.Brand;
 using Product.Application.Dto.Category;
@@ -19,11 +21,45 @@ using Product.Infrastructure.Data;
 using Product.Infrastructure.Data.Interface;
 using Product.Infrastructure.EFRepositories;
 using Product.Infrastructure.EFRepositories.Base;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 var config = builder.Configuration;
 
+// Configure JWT authentication
+services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = config["Jwt:Issuer"],
+            ValidAudiences = new[] { "admin-permission", "marketing-permission", "customer-permission" },
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]))
+        };
+    });
+
+// Configure Authorization policies
+services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminPolicy", policy =>
+    {
+        policy.RequireRole("Admin");
+    });
+
+    options.AddPolicy("MarketingPolicy", policy =>
+    {
+        policy.RequireRole("Marketing");
+    });
+    options.AddPolicy("CustomerPolicy", policy =>
+    {
+        policy.RequireRole("Customer");
+    });
+});
 
 // Database Dependencies
 services.AddScoped<IProductContext, ProductContext>();
@@ -89,6 +125,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+app.UseAuthentication();
 
 app.MapControllers();
 

@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Product.Application.Dto.Tag;
 using Product.Application.Interfaces;
 
 namespace Product.Api.Controllers
 {
     [ApiController]
+    [Authorize(Policy = "AdminPolicy")]
     [Route("api/tags")]
     public class TagController : ControllerBase
     {

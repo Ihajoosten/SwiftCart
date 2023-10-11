@@ -1,5 +1,7 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Order.Api.Mappings;
 using Order.Application.Dto.Order;
 using Order.Application.Dto.OrderItem;
@@ -16,11 +18,41 @@ using Order.Infrastructure.Data;
 using Order.Infrastructure.Data.Interface;
 using Order.Infrastructure.EFRepositories;
 using Order.Infrastructure.EFRepositories.Base;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 var config = builder.Configuration;
 
+// Configure JWT authentication
+services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = config["Jwt:Issuer"],
+            ValidAudiences = new[] { "admin-permission", "customer-permission" },
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]))
+        };
+    });
+
+// Configure Authorization policies
+services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminPolicy", policy =>
+    {
+        policy.RequireRole("Admin");
+    });
+
+    options.AddPolicy("CustomerPolicy", policy =>
+    {
+        policy.RequireRole("Customer");
+    });
+});
 
 // Database Dependencies
 services.AddScoped<IOrderContext, OrderContext>();
@@ -76,5 +108,6 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+app.UseAuthentication();
 app.MapControllers();
 app.Run();

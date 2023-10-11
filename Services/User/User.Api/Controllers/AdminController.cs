@@ -7,7 +7,7 @@ namespace User.Api.Controllers
 {
     [ApiController]
     [Route("api/admin")]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Policy = "AdminPolicy")]
     public class AdminController : ControllerBase
     {
         private readonly IAppUserService _userService;

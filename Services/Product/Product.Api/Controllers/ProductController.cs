@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Product.Application.Dto.Product;
 using Product.Application.Interfaces;
 
@@ -16,6 +17,7 @@ namespace Product.Api.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "AdminPolicy, MarketingPolicy, Customer")]
         public async Task<IActionResult> GetAllProducts()
         {
             try
@@ -35,6 +37,7 @@ namespace Product.Api.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Policy = "AdminPolicy, MarketingPolicy, Customer")]
         public async Task<IActionResult> GetProductById(int id)
         {
             try
@@ -55,6 +58,7 @@ namespace Product.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "AdminPolicy")]
         public async Task<IActionResult> CreateProduct([FromBody] CreateProductDto createDto)
         {
             try
@@ -74,6 +78,7 @@ namespace Product.Api.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Policy = "AdminPolicy")]
         public async Task<IActionResult> UpdateProduct(int id, [FromBody] UpdateProductDto updateDto)
         {
             try
@@ -97,6 +102,7 @@ namespace Product.Api.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = "AdminPolicy")]
         public async Task<IActionResult> DeleteProduct(int id)
         {
             try
@@ -117,6 +123,7 @@ namespace Product.Api.Controllers
         }
 
         [HttpGet("byBrand/{brandId}")]
+        [Authorize(Policy = "AdminPolicy, MarketingPolicy")]
         public async Task<IActionResult> GetProductsByBrand(int brandId)
         {
             try
@@ -136,6 +143,7 @@ namespace Product.Api.Controllers
         }
 
         [HttpGet("byCategory/{categoryId}")]
+        [Authorize(Policy = "AdminPolicy, MarketingPolicy")]
         public async Task<IActionResult> GetProductsByCategory(int categoryId)
         {
             try
@@ -155,6 +163,7 @@ namespace Product.Api.Controllers
         }
 
         [HttpGet("byTag/{tagId}")]
+        [Authorize(Policy = "AdminPolicy, MarketingPolicy")]
         public async Task<IActionResult> GetProductsByTag(int tagId)
         {
             try
@@ -174,6 +183,7 @@ namespace Product.Api.Controllers
         }
 
         [HttpGet("byRating/{minRating}")]
+        [Authorize(Policy = "AdminPolicy, MarketingPolicy")]
         public async Task<IActionResult> GetProductsByRating(int minRating)
         {
             try
@@ -193,6 +203,7 @@ namespace Product.Api.Controllers
         }
 
         [HttpGet("topSelling/{count}")]
+        [Authorize(Policy = "AdminPolicy, MarketingPolicy")]
         public async Task<IActionResult> GetTopSellingProducts(int count)
         {
             try
@@ -212,6 +223,7 @@ namespace Product.Api.Controllers
         }
 
         [HttpGet("newArrivals/{count}")]
+        [Authorize(Policy = "AdminPolicy, MarketingPolicy")]
         public async Task<IActionResult> GetNewArrivalProducts(int count)
         {
             try

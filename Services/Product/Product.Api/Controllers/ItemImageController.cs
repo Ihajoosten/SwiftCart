@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Product.Application.Dto.ItemImage;
 using Product.Application.Interfaces;
 
 namespace Product.Api.Controllers
 {
     [ApiController]
+    [Authorize(Policy = "AdminPolicy")]
     [Route("api/itemimages")]
     public class ItemImageController : ControllerBase
     {

@@ -17,7 +17,7 @@ namespace User.Api.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Policy = "AdminPolicy")]
         public async Task<IActionResult> GetAllPhoneNumbers()
         {
             try

@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Product.Application.Dto.Brand;
 using Product.Application.Interfaces;
 
 namespace Product.Api.Controllers
 {
     [ApiController]
+    [Authorize(Policy = "AdminPolicy")]
     [Route("api/brands")]
     public class BrandController : ControllerBase
     {

@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Product.Application.Dto.ProductTag;
 using Product.Application.Interfaces;
 
 namespace Product.Api.Controllers
 {
     [ApiController]
+    [Authorize(Policy = "AdminPolicy")]
     [Route("api/producttags")]
     public class ProductTagController : ControllerBase
     {

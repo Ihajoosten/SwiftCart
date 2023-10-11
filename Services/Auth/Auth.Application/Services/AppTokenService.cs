@@ -3,9 +3,11 @@ using Auth.Application.Dto.Token;
 using Auth.Application.Interfaces;
 using Auth.Core.Entities;
 using Auth.Core.IRepositories;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text;
 
 namespace Auth.Application.Services
 {
@@ -13,33 +15,42 @@ namespace Auth.Application.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly ITokenRepository _tokenRepository;
-        private readonly string _jwtSecretKey = "Testing-new-jwt-functionalty";
-
-        public AppTokenService(IUserRepository userRepository, ITokenRepository tokenRepository)
+        private readonly IConfiguration _configuration;
+        public AppTokenService(IUserRepository userRepository, ITokenRepository tokenRepository, IConfiguration configuration)
         {
             _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
             _tokenRepository = tokenRepository ?? throw new ArgumentNullException(nameof(tokenRepository));
+            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
 
         public string GenerateAccessToken(User user)
         {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = System.Text.Encoding.ASCII.GetBytes(_jwtSecretKey);
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            var tokenDescriptor = new SecurityTokenDescriptor
+            var claims = new List<Claim>
             {
-                Subject = new ClaimsIdentity(new[]
-                {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.Username),
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Role, user.Role.ToString())
-            }),
-                Expires = DateTime.UtcNow.AddHours(1),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                new Claim(ClaimTypes.Email, user.Email)
             };
 
-            var token = tokenHandler.CreateToken(tokenDescriptor);
+            // Dynamically set the "aud" claim based on some condition
+            string audience = DetermineAudienceBasedOnConditions(user.Role.ToString());
+            claims.Add(new Claim(JwtRegisteredClaimNames.Aud, audience));
+
+            // Add role as claims
+            claims.Add(new Claim(ClaimTypes.Role, user.Role.ToString()));
+
+            var token = new JwtSecurityToken(
+                issuer: _configuration["Jwt:Issuer"],
+                audience: audience, // Set the audience dynamically
+                claims: claims,
+                expires: DateTime.UtcNow.AddMinutes(Convert.ToDouble(_configuration["Jwt:ExpirationInMinutes"])),
+                signingCredentials: credentials
+            );
+
+            var tokenHandler = new JwtSecurityTokenHandler();
             return tokenHandler.WriteToken(token);
         }
 
@@ -49,7 +60,7 @@ namespace Auth.Application.Services
             // such as the user's ID or other relevant details.
 
             var refreshTokenHandler = new JwtSecurityTokenHandler();
-            var key = System.Text.Encoding.ASCII.GetBytes(_jwtSecretKey);
+            var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]);
 
             var refreshTokenDescriptor = new SecurityTokenDescriptor
             {
@@ -128,6 +139,19 @@ namespace Auth.Application.Services
         {
             // Use BCrypt to verify the entered password against the hashed password
             return BCrypt.Net.BCrypt.Verify(enteredPassword, hashedPassword);
+        }
+
+        private static string DetermineAudienceBasedOnConditions(string role)
+        {
+            return role switch
+            {
+                "Admin" => "admin-permission",
+                "Customer" => "customer-permission",
+                "Sales" => "sales-permission",
+                "Marketing" => "marketing-permission",
+                "CustomerSupport" => "customer-support-permission",
+                _ => "guest-permission",
+            };
         }
     }
 }
